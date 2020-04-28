@@ -1,3 +1,4 @@
 {
-  "extends": "tslint:latest"
+  "extends": "tslint:latest".
+  "semicolon": [true, "never"]
 }
