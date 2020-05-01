@@ -1,10 +1,20 @@
 import * as WebSocket from 'ws'
 import { EventEmitter } from 'events'
-// import { MarketOrderCreationRequest } from './types'
 
 type WebSocketUrlType =
   'wss://ws.prod.blockchain.info/mercury-gateway/v1/ws'
 type DefaultOrigin = 'https://exchange.blockchain.com'
+
+interface BaseOrderCreateType {
+  symbol: string,
+  side: 'buy' | 'sell',
+  orderQty: number,
+}
+
+interface CreateLimitOrderType extends BaseOrderCreateType {
+  price: number;
+  execInst?: 'ALO';
+}
 
 interface SubscriptionType {
   token: string;
@@ -116,17 +126,27 @@ export default class BCX extends EventEmitter {
     this.emit('close')
   }
 
-  public createMarketOrder(orderInfo: any) {
-    const BaseOrder = {
+  public createMarketOrder(orderInfo: BaseOrderCreateType) {
+    const Order = {
       action: 'NewOrderSingle',
       channel: 'trading',
       clOrdID: 'Client ID 3',
       ordType: 'market',
       timeInForce: 'GTC',
-      execInst: 'ALO'
+      ...orderInfo,
     }
+    this.ws && this.ws.send(JSON.stringify(Order))
+  }
 
-    const MarketOrder = { ...BaseOrder, ...orderInfo }
-    this.ws && this.ws.send(JSON.stringify(MarketOrder))
+  public createLimitOrder(orderInfo: CreateLimitOrderType) {
+    const Order = {
+      action: 'NewOrderSingle',
+      channel: 'trading',
+      clOrdID: 'Client ID 3',
+      ordType: 'limit',
+      timeInForce: 'GTC',
+      ...orderInfo,
+    }
+    this.ws && this.ws.send(JSON.stringify(Order))
   }
 }

@@ -13,7 +13,24 @@
   "author": {
     "name": "Dylan Bathurst"
   },
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dylanbathurst/bcx.git"
+  },
+  "bugs": "https://github.com/dylanbathurst/bcx/issues",
+  "homepage": "https://exchange.blockchain.com/",
+  "keywords": [
+    "blockchain",
+    "exchange",
+    "bitcoin",
+    "ethereum",
+    "crypto",
+    "api",
+    "trading",
+    "bot",
+    "websockets"
+  ],
   "dependencies": {
     "tslint": "^6.1.1",
     "typescript": "^3.8.3",

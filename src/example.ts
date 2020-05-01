@@ -2,7 +2,7 @@ import BCX from '.'
 
 // Instructions to obtain an api key can be found here
 // https://exchange.blockchain.com/api
-const YOUR_KEY = 'PUT YOUR KEY HERE'
+const YOUR_KEY = process.env.BCX_SECRET || ''
 
 const bcx = new BCX({
   secret: `${YOUR_KEY}`,
@@ -15,10 +15,21 @@ bcx.on('open', () => { console.log('opened') })
 bcx.on('message', data => {
   console.log('message', data)
   if ((data.event === 'subscribed') && (data.channel === 'trading')) {
-    bcx.createMarketOrder({
+
+    // CREATES A REAL ORDER!!!
+    // bcx.createMarketOrder({
+    //   symbol: 'BTC-USD',
+    //   side: 'buy',
+    //   orderQty: 0.01,
+    // })
+
+    // CREATES A REAL ORDER!!!
+    bcx.createLimitOrder({
       symbol: 'BTC-USD',
       side: 'sell',
-      orderQty: 0.0001,
+      orderQty: 0.01,
+      price: 200000,
+      execInst: 'ALO', // (Optional) Post only
     })
   }
 })
